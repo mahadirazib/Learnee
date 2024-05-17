@@ -1,0 +1,3 @@
+SELECT *
+FROM institutes
+WHERE JSON_CONTAINS(admins, "['101']");
