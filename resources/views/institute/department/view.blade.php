@@ -22,7 +22,7 @@
 
                       <div class="ms-auto"> 
                         @if ($is_admin)
-                            <x-link-button class="mt-4" href="/">
+                            <x-link-button class="mt-4 " href="{{ route('institute.department.edit-form', [ $institute, $department ]) }}">
                                 Edit Dept.
                             </x-link-button>
                         @elseif (!$is_department_member)

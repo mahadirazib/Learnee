@@ -219,32 +219,15 @@
                                                     <p class="text-gray-600">
                                                         {{ Str::limit($department->description, 100) }}
                                                     </p>
-                                                    <div class="grid grid-cols-2 gap-4 content-center">
+                                                    <div class="">
                                                         <a href="{{ route('institute.department.view-single', [$institute->id, $department->id]) }}"
-                                                            class="content-center">
+                                                            class="">
                                                             <p
                                                                 class="block text-indigo-400 font-bold  hover:text-slate-800 transition duration-200">
                                                                 Details <span style="size: 20px">→</span>
                                                             </p>
                                                         </a>
 
-                                                        {{-- <div>
-                                                            @if ($is_admin)
-                                                            <x-button-blank-link
-                                                            class="bg-teal-600 float-end ms-3" 
-                                                            href="{{ route('institute.notice.edit-form', [$institute, $department]) }}">
-                                                            Edit
-                                                            </x-button-blank-link>
-                                                            <form action="{{ route('institute.notice.delete', [$institute, $department]) }}" method="POST">
-                                                                @csrf
-                                                                @method('DELETE')
-                                                                <x-button-blank-submit
-                                                                    class="bg-red-500 float-end ms-3" href="/">
-                                                                    Delete
-                                                                </x-button-blank-submit>
-                                                            </form>
-                                                            @endif
-                                                        </div> --}}
                                                     </div>
                                                 </div>
                                             </div>

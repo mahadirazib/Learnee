@@ -66,9 +66,7 @@ class InstituteDepartmentController extends Controller
 
         $searchName = $request->search;
         
-        // $searchName = $request['search'];
         $institute_id = (int)$institute_id;
-        // return response()->json(['search by'=>$searchName, 'institute'=> $institute_id ]);
 
         $users = User::select('users.*')
         ->join('institute_faculties', 'users.id', '=', 'institute_faculties.faculty')
@@ -79,13 +77,6 @@ class InstituteDepartmentController extends Controller
         })
         ->get();
 
-
-
-        // $users = User::select('users.*')
-        //     ->join('institute_faculties', 'users.id', '=', 'institute_faculties.faculty')
-        //     ->where('institute_faculties.institute', $institute_id)
-        //     ->where('users.name', 'like', '%' . $searchName . '%')
-        //     ->get();
     
         return response()->json($users);
     }
@@ -140,13 +131,37 @@ class InstituteDepartmentController extends Controller
 
 
 
-    public function edit(Request $request){
-        
+    public function edit(Request $request, $institute_id, $department_id){
+
+        $department = InstituteDepartment::find($department_id);
+        $institute = Institute::find($institute_id);
+
+        return view("institute.department.edit", ["institute"=> $institute, "department"=> $department]);
     }
 
 
-    public function update(Request $request){
+    public function update(Request $request, $institute_id, $department_id){
 
+        $data = $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'description' => ['required', 'string',],
+            'passkeys.*'=> ['nullable', 'string'],
+            'subjects'=> [ 'nullable', 'json'],
+        ]);
+
+        $data['subjects'] = json_decode($request['subjects']);
+
+        $department = InstituteDepartment::find($department_id);
+
+        $department->name = $data['name'];
+        $department->description = $data['description'];
+        $department->passkeys = $data['passkeys'];
+        $department->subjects = $data['subjects'];
+
+        $department->update();
+
+
+        return response()->json(["data"=> $data]);
     }
 
 

@@ -53,39 +53,18 @@
                                                       <p class="text-gray-600">
                                                         {{ Str::limit($dept->description, 100) }}
                                                       </p>
-                                                      <div class="grid grid-cols-2 gap-4 ">
-                                                        <div class="content-center">
+                                                      <div class="">
+                                                        <div class="">
                                                             <a href="{{ route('institute.department.view-single', [$institute->id, $dept->id]) }}"
-                                                                class="content-center">
+                                                                class="">
                                                                 <p
                                                                     class="block text-indigo-400 font-bold  hover:text-slate-800 transition duration-200">
                                                                     Details →
                                                                 </p>
                                                             </a>
                                                         </div>
-
-                                                        @if ($is_admin)
-                                                          
-                                                        <div>
-                                                            <x-button-blank-link
-                                                                class="bg-teal-600 float-end ms-3" 
-                                                                href="">
-                                                                Edit
-                                                            </x-button-blank-link>
-                                                            <form action="" method="POST">
-                                                                @csrf
-                                                                @method('DELETE')
-                                                                <x-button-blank-submit
-                                                                    class="bg-red-500 float-end ms-3" href="/">
-                                                                    Delete
-                                                                </x-button-blank-submit>
-                                                            </form>
-                                                        </div>
-                                                        
-                                                        @endif
-
-
                                                       </div>
+                                                      
                                                   </div>
                                               </div>
                                           </div>
