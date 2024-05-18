@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DepartmentFaculties;
 use App\Models\DepartmentNotice;
 use Illuminate\Http\Request;
 
@@ -20,7 +21,7 @@ class InstituteDepartmentController extends Controller
         $institute = Institute::find($institute_id);
         $user = auth()->user();
 
-        $is_admin = is_department_faculty_or_student($institute_id, $user->id);
+        $is_admin = is_institute_admin($institute_id, $user->id);
 
         // dd($department);
 
@@ -33,26 +34,25 @@ class InstituteDepartmentController extends Controller
 
     public function view(Request $request, $institute_id, $department_id){
 
-        // $department = InstituteDepartment::with('institute')
-        //             ->where('id', $department_id)->first();
-
         $department = InstituteDepartment::select('institute_departments.*', 'institutes.id as institute_id', 'institutes.name as institute_name', 'institutes.created_at as institute_created_at')
                 ->join('institutes', 'institutes.id', '=', 'institute_departments.institute')
                 ->where('institute_departments.id', $department_id)
                 ->first();
 
-        // dd($department->name, $department->institute_name);
-
         if($department->institute_id == $institute_id){            
             $user = auth()->user();
             $is_admin = is_institute_admin($institute_id, $user->id );
-            $is_member = is_institute_faculty_or_student($institute_id, $user->id );
+            $is_institute_member = is_institute_faculty_or_student($institute_id, $user->id );
+            $is_department_member = is_department_faculty_or_student($institute_id, $department_id, $user->id );
 
-            $notices = DepartmentNotice::where('department', $department->id)->paginate(4);
+            $notices = null;
 
-            // $department['subjects'] = json_decode($department->subjects);
+            if($is_admin || $is_department_member){
+                $notices = DepartmentNotice::where('department', $department->id)->paginate(4);
+            }
 
-            return view('institute.department.view', ['department'=> $department, 'notices' => $notices, 'is_admin' => $is_admin, 'is_member'=> $is_member, 'institute' => $institute_id]);
+
+            return view('institute.department.view', ['institute' => $institute_id, 'department'=> $department, 'notices' => $notices, 'is_admin' => $is_admin, 'is_institute_member'=> $is_institute_member, 'is_department_member' => $is_department_member ]);
         }else{
             return view('message', ['message'=> "Department and institute are mismatched."]);
         }
@@ -66,7 +66,7 @@ class InstituteDepartmentController extends Controller
 
         $searchName = $request->search;
         
-        $searchName = $request['search'];
+        // $searchName = $request['search'];
         $institute_id = (int)$institute_id;
         // return response()->json(['search by'=>$searchName, 'institute'=> $institute_id ]);
 
@@ -98,19 +98,10 @@ class InstituteDepartmentController extends Controller
     public function create(Request $request, $institute_id){
         $institute = Institute::find($institute_id);
 
-
-        // $subjects = [];
-        // $random_Subjects = ["Anthropology", "Archaeology", "History", "Philosophy", "Religion", "The Arts", "Economics", "Geography", "Political Science", "Psychology"];
-        // for ($i = 0; $i < rand(1, 20); $i++){
-        //     $subject_name = $random_Subjects[random_int(0, 9)];
-        //     $subject_reward = random_int(1,3)." ".["Credits", "Marks", "Points"][random_int(0, 2)];
-        //     $subjects[$subject_name] = $subject_reward;
-        // }
-
-        // dd($subjects);
-
         return view("institute.department.create", ["institute"=> $institute]);
     }
+
+
 
 
     public function store(Request $request, $institute_id){
@@ -125,6 +116,8 @@ class InstituteDepartmentController extends Controller
         ]);
 
         $data['subjects'] = json_decode($request['subjects']);
+        $user = auth()->user();
+        $data['created_by'] = $user->id;
 
 
         $existing_department = InstituteDepartment::select('name')
@@ -132,7 +125,6 @@ class InstituteDepartmentController extends Controller
                     ->where('name', $data['name'])
                     ->get();
 
-        // return response()->json(["data" => count($existing_department)]);
 
         if(count($existing_department) <= 0){
             $data['institute'] = $institute_id;
@@ -143,7 +135,13 @@ class InstituteDepartmentController extends Controller
             return response()->json(["message" => "Department Already exists. Please change the name."]);
         }
 
-        // return redirect()->route('institute.view-single', $institute_id)->with('success','Department created successfully');
+    }
+
+
+
+
+    public function edit(Request $request){
+        
     }
 
 
@@ -155,4 +153,71 @@ class InstituteDepartmentController extends Controller
     public function destroy(Request $request){
 
     }
+
+
+
+
+    
+
+
+    public function join(Request $request, $institute_id, $department_id){
+        $user = auth()->user();
+        $user_id = $user->id;
+
+        $department_passkeys = InstituteDepartment::select('passkeys')->where('id', $department_id)->first();
+
+    
+        if(is_institute_faculty_or_student($institute_id, $user_id )){
+            if(!empty($department_passkeys->passkeys) && $department_passkeys->passkeys != null ){
+                return view('institute.department.join', ['institute'=> $institute_id, 'department' => $department_id ]);
+            }else{
+
+                $department_faculty = DepartmentFaculties::create([
+                    'faculty' => $user_id,
+                    'department' => $department_id
+                ]);
+
+                return redirect()->route('institute.department.view-single', [$institute_id, $department_id])->with('success','Joined department successfully');
+            }
+        }else{
+            return redirect()->route('institute.department.view-single', [$institute_id, $department_id])->with('failed','You are not a member of this institute. Please join this institute first to join this department.');
+        }
+        
+    }
+
+
+
+
+
+    public function join_confirm(Request $request, $institute_id, $department_id){
+        $user = auth()->user();
+        $user_id = $user->id;
+        $department_passkeys = InstituteDepartment::select('passkeys')->where('id', $department_id)->first();
+
+        $user_given_passkey = $request->validate([
+            'passkey' => ['required', 'string', 'max:255']
+        ]);
+
+        // dd(in_array( $user_given_passkey['passkey'], $institute_passkeys->passkeys), $institute_passkeys->passkeys, "User given: ".$user_given_passkey['passkey']);
+
+        if(in_array($user_given_passkey['passkey'], $department_passkeys->passkeys)){
+            $department_faculty = DepartmentFaculties::create([
+                'faculty' => $user_id,
+                'department' => $department_id,
+                'passkey_upon_joining' => $user_given_passkey['passkey']
+            ]);
+
+            return redirect()->route('institute.department.view-single', [$institute_id, $department_id])->with('success','Joined department successfully');
+        }else{
+            return redirect()->route('institute.department.view-single', [$institute_id, $department_id])->with('failed','Wrong passkey.');
+        }
+
+    }
+
+
+
+
+
+
+
 }

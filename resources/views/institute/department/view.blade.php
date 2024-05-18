@@ -20,6 +20,20 @@
                           </span>
                       </div>
 
+                      <div class="ms-auto"> 
+                        @if ($is_admin)
+                            <x-link-button class="mt-4" href="/">
+                                Edit Dept.
+                            </x-link-button>
+                        @elseif (!$is_department_member)
+
+                            <x-button-blank-link class="outline outline-2 text-gray-800 bg-gray-800 ms-auto" href="{{ route('institute.department.join', [$institute, $department]) }}">
+                                Join Dept.
+                            </x-button-blank-link>
+                        
+                        @endif
+                      </div>
+
                   </div>
 
 
@@ -32,7 +46,7 @@
 
 
                   <!-- Department Notice -->
-                  @if ($is_member || $is_admin)
+                  @if (isset($notices) && $notices != null)
                     <div class="mt-10">
                         <div class="grid grid-cols-2 gap-4 content-center">
                             <h2 class="font-bold text-2xl"> Notices: </h2>

@@ -394,7 +394,7 @@
 
             // Function to remove
             $(document).on('click', '#passkeyContainer div', function() {
-                let removablePasskey = $(this).html();
+                let removablePasskey = $(this).text().trim();
                 let index = passkeys.indexOf(removablePasskey);
                 $('#passkeyInput').val(removablePasskey);
                 passkeys.splice(index, 1);

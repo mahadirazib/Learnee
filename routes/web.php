@@ -75,7 +75,11 @@ Route::get('/institute_teacher_list/{institute_id}', [ InstituteDepartmentContro
 Route::get('institute/{institute_id}/department', [InstituteDepartmentController::class, 'index'])->middleware(['auth'])->name('institute.department.all');
 Route::get('institute/{institute_id}/department/create', [InstituteDepartmentController::class, 'create'])->middleware(['auth', 'idtype.teacher', 'institute.admin'])->name('institute.department.create');
 Route::post('institute/{institute_id}/department/store', [InstituteDepartmentController::class, 'store'])->middleware(['auth', 'idtype.teacher', 'institute.admin' ])->name('institute.department.store');
+Route::get('institute/{institute_id}/department/edit', [InstituteDepartmentController::class, 'edit'])->middleware(['auth', 'idtype.teacher', 'institute.admin'])->name('institute.department.edit-form');
+Route::post('institute/{institute_id}/department/update', [InstituteDepartmentController::class, 'update'])->middleware(['auth', 'idtype.teacher', 'institute.admin' ])->name('institute.department.update');
 Route::get('institute/{institute_id}/department/{department_id}', [InstituteDepartmentController::class, 'view'])->middleware(['auth'])->name('institute.department.view-single');
+Route::get('institute/{institute_id}/department/{department_id}/join', [InstituteDepartmentController::class, 'join'])->middleware(['auth', 'institute.facultyandstudent'])->name('institute.department.join');
+Route::post('institute/{institute_id}/department/{department_id}/join_confirn', [InstituteDepartmentController::class, 'join_confirm'])->middleware(['auth', 'institute.facultyandstudent'])->name('institute.department.join.confirm');
 
 
 // Institute Notices 

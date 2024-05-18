@@ -57,7 +57,7 @@ class TestController extends Controller
         // })
         // ->get();
 
-        dd(is_department_faculty_or_student(3, 4));
+        dd(is_department_faculty_or_student(3, 7, 5));
 
         // dd( is_institute_admin($instituteId, $userId) );
         // return view('test', ['institute'=> $institute]);

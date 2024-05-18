@@ -12,19 +12,13 @@
               <div class="p-6 bg-white border-b border-gray-200">
 
                   <!-- Institute Name and date -->
-                  <div class="grid grid-cols-2 gap-4 mb-5">
+                  <div class=" mb-5">
                       <div>
                           <h1 class="font-bold text-4xl"> {{ $institute->name }} </h1>
                           <span class="text-sm text-gray-500"> Since: {{ $institute->created_at->format('j F, Y') }}
                           </span>
                       </div>
-                      <div class="ms-auto">
-                          @if ($is_admin)
-                              <x-link-button class="mt-4" href="/">
-                                Edit Dept.
-                              </x-link-button>
-                          @endif
-                      </div>
+
                   </div>
 
 
