@@ -29,7 +29,7 @@
                     </div>
 
                     <h1 class="font-semibold text-xl mb-8" style="margin: 0 0 15px">
-                        Edit <span class="text-teal-600 font-bold">{{ $department->name }}</span> department:
+                        Edit <span class="text-teal-600 font-bold"> <q>{{ $department->name }}</q> </span> department:
                     </h1>
 
                     <!-- Validation Errors -->

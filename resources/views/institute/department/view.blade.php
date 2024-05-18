@@ -15,7 +15,7 @@
                   <div class="grid grid-cols-2 gap-4 mb-5">
                       <div>
                           <h1 class="font-bold text-4xl">{{$department->name}}</h1> 
-                          <h2 class="font-bold text-2xl">of {{ $department->institute_name }}  </h2>
+                          <h2 class="font-bold text-2xl ">of <a class="text-lime-600" href="{{ route('institute.view-single', $department->institute ) }}">{{ $department->institute_name }}</a> </h2>
                           <span class="text-sm text-gray-500"> Department created: {{ $department->created_at->format('j F, Y') }}
                           </span>
                       </div>
@@ -61,7 +61,7 @@
                         </div>
                         <div class="mt-5 mb-5">
                             @if ($is_admin)
-                            <x-button-blank-link class="outline outline-2 text-gray-800 bg-gray-800 ms-auto" href="{{route('institute.notice.create', $institute)}}">
+                            <x-button-blank-link class="outline outline-2 text-gray-800 bg-gray-800 ms-auto" href="{{route('institute.department.notice.create', [$institute, $department])}}">
                                 Add new Notice
                             </x-button-blank-link>
                             @endif

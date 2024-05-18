@@ -8,8 +8,9 @@
                     <!-- Institute Name and date joined -->
                     <div class="grid mb-5">
                         <div>
-                            <h1 class="font-bold text-4xl"> {{ $institute->name }} </h1>
-                            <span class="text-sm text-gray-500"> Since: {{ $institute->created_at->format('j F, Y') }}
+                            <h1 class="font-bold text-4xl">{{$department->name}}</h1> 
+                            <h2 class="font-bold text-2xl ">of <a class="text-lime-600" href="{{ route('institute.view-single', $department->institute ) }}">{{ $department->institute_name }}</a> </h2>
+                            <span class="text-sm text-gray-500"> Department created: {{ $department->created_at->format('j F, Y') }}
                             </span>
                         </div>
                     </div>
@@ -19,7 +20,7 @@
                   <!-- Validation Errors -->
                   <x-auth-validation-errors class="mb-4" :errors="$errors" />
 
-                  <form method="POST" id="myForm" action="{{ route('institute.notice.store', $institute) }}"
+                  <form method="POST" id="myForm" action="{{ route('institute.department.notice.store', [$department->institute, $department]) }}"
                       enctype="multipart/form-data">
                       @csrf
 
@@ -58,7 +59,7 @@
                       <!-- Register and cancel button -->
                       <div class="flex items-center justify-end mt-4">
                           <a class="underline text-sm text-gray-600 hover:text-gray-900"
-                              href="{{ route('institute.notice.all', $institute) }}">
+                              href="{{ route('institute.department.notice.all', [$department->institute, $department]) }}">
                               {{ __('Cancel?') }}
                           </a>
 

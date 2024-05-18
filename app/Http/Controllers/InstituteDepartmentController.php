@@ -123,7 +123,7 @@ class InstituteDepartmentController extends Controller
             
             return response()->json(["data" => $institute_department, "message" => "Department Created successfully"]);
         }else{
-            return response()->json(["message" => "Department Already exists. Please change the name."]);
+            return response()->json(["message" => "Department Already exists. Please chose another name."]);
         }
 
     }

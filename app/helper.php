@@ -66,8 +66,46 @@ if(!function_exists("is_institute_faculty_or_student")){
 
 
 
+if(!function_exists("is_department_admin")){
+  function is_department_admin($instituteId, $deptId, $userId){
+
+    if(is_institute_admin($instituteId, $userId)){
+      return true;
+    }else{
+      $is_administrator = DB::table('institute_departments')
+      ->where('id', $deptId)
+      ->where('institute', $instituteId)
+      ->where(function ($query) use ($userId) {
+        $query->whereRaw('JSON_CONTAINS(admins, ?)', ["\"$userId\""])
+        ->orWhereJsonContains('admins', '"'.$userId.'"')
+        ->orWhereJsonContains('admins', $userId)
+        ->orWhere('created_by', $userId)
+        ->orWhere('department_head', $userId);
+      })->get();
+
+      if(count($is_administrator) > 0){
+        return true;
+      }else{
+        return false;
+      }
+    }
+
+    
+
+
+  }
+
+}
+
+
+
+
 if(!function_exists("is_department_faculty_or_student")){
   function is_department_faculty_or_student($instituteId, $deptId, $userId){
+
+    if(is_institute_admin($instituteId, $userId)){
+      return true;
+    }
 
     if(is_institute_faculty_or_student($instituteId, $userId)){
 
