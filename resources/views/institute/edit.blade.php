@@ -23,7 +23,11 @@
 
                 <div class="ms-auto">
                     <x-link-button class="mt-4" href="/">
-                        Add Image
+                        Change Images
+                    </x-link-button>
+
+                    <x-link-button class="mt-4 ms-4" href="{{ route('institute.admin.list', $institute) }}">
+                        Change Admin
                     </x-link-button>
                 </div>
 

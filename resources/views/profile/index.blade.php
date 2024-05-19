@@ -6,7 +6,7 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200 grid gap-4 grid-cols-2 ">
 
-                    <div class="drop-shadow-md rounded-md overflow-hidden mr-10" style="width: 100%; height:300px">
+                    <div class="drop-shadow-md w-fit h-96 rounded-md overflow-hidden" >
 
                         @if (isset($user->image) && file_exists('storage/profile_pictures/'.$user->image))
                             <img 
@@ -22,9 +22,9 @@
                         
                     </div>
 
-                    <div class="grid gap-4 grid-rows-2" style="padding-left: 20px">
+                    <div class="grid gap-6 grid-rows-2" style="padding-left: 20px">
 
-                        <div class="pl-10" >
+                        <div class="" >
     
                             <h1 class="font-semibold text-xl"
                             style="font-size: 30px">

@@ -1,11 +1,13 @@
 <?php
 
 use App\Http\Controllers\DepartmentNoticeController;
+use App\Http\Controllers\InstituteChangeAdminController;
 use App\Http\Controllers\InstituteController;
 use App\Http\Controllers\InstituteControllerGlobal;
 use App\Http\Controllers\InstituteDepartmentController;
 use App\Http\Controllers\InstituteNoticeController;
 use App\Http\Controllers\TestController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -37,7 +39,8 @@ require __DIR__.'/auth.php';
 Route::resource('profile', UserProfileController::class);
 
 
-// Global institute related.
+// Global Routes.
+Route::get('user/{user_id}', [UserController::class, 'index'])->middleware(['auth'])->name('user.view');
 Route::get('institute/search', [InstituteControllerGlobal::class, 'index'])->middleware(['auth'])->name('global.institute.search');
 
 
@@ -56,6 +59,11 @@ Route::post('institute/update/{institute_id}', [InstituteController::class, 'upd
 Route::get('institute/{institute_id}', [InstituteController::class, 'show_single'])->middleware(['auth'])->name('institute.view-single');
 Route::get('institute/{institute_id}/join', [InstituteController::class, 'join'])->middleware(['auth'])->name('institute.join');
 Route::post('institute/{institute_id}/join', [InstituteController::class, 'join_confirm'])->middleware(['auth'])->name('institute.join.confirm');
+
+// Institute Admin change, delete 
+Route::get('institute/{institute_id}/admin_list', [InstituteChangeAdminController::class, 'institute_admin_list'])->middleware(['auth', 'idtype.teacher', 'institute.admin'])->name('institute.admin.list');
+Route::post('institute/{institute_id}/admin_update', [InstituteChangeAdminController::class, 'institute_admin_update'])->middleware(['auth', 'idtype.teacher', 'institute.admin'])->name('institute.admin.update');
+Route::delete('institute/{institute_id}/admin_delete/{admin_id}', [InstituteChangeAdminController::class, 'institute_admin_delete'])->middleware(['auth', 'idtype.teacher', 'institute.admin'])->name('institute.admin.delete');
 
 
 // Institute Notices 
@@ -91,6 +99,7 @@ Route::get('institute/{institute_id}/department/{department_id}/notice/{notice_i
 Route::get('institute/{institute_id}/department/{department_id}/notice/{notice_id}/edit', [DepartmentNoticeController::class, 'edit'])->middleware(['auth', 'idtype.teacher', 'institute.department.admin' ])->name('institute.department.notice.edit-form');
 Route::post('institute/{institute_id}/department/{department_id}/notice/{notice_id}/update', [DepartmentNoticeController::class, 'update'])->middleware(['auth', 'idtype.teacher', 'institute.department.admin' ])->name('institute.department.notice.update');
 Route::delete('institute/{institute_id}/department/{department_id}/notice/{notice_id}/delete', [DepartmentNoticeController::class, 'destroy'])->middleware(['auth', 'idtype.teacher', 'institute.department.admin'])->name('institute.department.notice.delete');
+
 
 
 
