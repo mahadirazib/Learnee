@@ -99,8 +99,52 @@ class DepartmentNoticeController extends Controller
     }
 
 
-    public function update(Request $request, $institute_id, $department_id, $notice_id)
-    {
+    public function edit(Request $request, $institute_id, $department_id, $notice_id){
+        
+
+        $notice = DepartmentNotice::select('*')
+                    ->where('id','=', $notice_id)
+                    ->where('department','=', $department_id)
+                    ->first();
+
+        if($notice){
+            $department = InstituteDepartment::select('institute_departments.*', 'institutes.id as institute_id', 'institutes.name as institute_name', 'institutes.created_at as institute_created_at')
+                ->join('institutes', 'institutes.id', '=', 'institute_departments.institute')
+                ->where('institute_departments.id', $department_id)
+                ->first();
+
+            return view('institute.department_notice.notice-edit', ['department' => $department, 'notice'=> $notice]);
+        }else{
+            return view('message', ['message'=> 'Something went wrong!']);
+        }
+
+    }
+
+
+    public function update(Request $request, $institute_id, $department_id, $notice_id){
+        $data = $request->validate([
+            'title' => ['required', 'string', 'max:255'],
+            'notice' => ['required', 'string',],
+        ]);
+
+        $notice = DepartmentNotice::find($notice_id);
+        $notice->title = $data['title'];
+        $notice->notice = $data['notice'];
+        $notice->update();
+
+        return redirect()->route('institute.department.notice.single', [$institute_id, $department_id, $notice])->with('success', 'Notice Created successfully');
+
+
+    }
+
+
+
+
+    public function destroy(Request $request, $institute_id, $department_id, $notice_id){
+        $notice = DepartmentNotice::find($notice_id);
+        $notice->delete();
+
+        return redirect()->route('institute.department.notice.all', [$institute_id, $department_id])->with('success','Notice Deleted successfully!');
     }
 
 

@@ -83,7 +83,7 @@ Route::get('institute/{institute_id}/department/{department_id}/join', [Institut
 Route::post('institute/{institute_id}/department/{department_id}/join_confirn', [InstituteDepartmentController::class, 'join_confirm'])->middleware(['auth', 'institute.facultyandstudent'])->name('institute.department.join.confirm');
 
 
-// Institute Notices 
+// Institute-Department Notices 
 Route::get('institute/{institute_id}/department/{department_id}/notice', [DepartmentNoticeController::class, 'index'])->middleware(['auth', 'institute.department.facultyandstudent'])->name('institute.department.notice.all');
 Route::get('institute/{institute_id}/department/{department_id}/notice/create', [DepartmentNoticeController::class, 'create'])->middleware(['auth', 'idtype.teacher', 'institute.department.admin' ])->name('institute.department.notice.create');
 Route::post('institute/{institute_id}/department/{department_id}/notice/store', [DepartmentNoticeController::class, 'store'])->middleware(['auth', 'idtype.teacher', 'institute.department.admin' ])->name('institute.department.notice.store');

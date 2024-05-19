@@ -53,7 +53,7 @@
                             <div class="font-bold grid content-end">
 
                                 <div class="flex float-end">
-                                    <a href=" {{ route('institute.notice.all', $institute) }} "
+                                    <a href=" {{ route('institute.department.notice.all', [$institute, $department]) }} "
                                         class="ms-auto ml-4 content-center text-gray-600 hover:text-gray-800">See all ❯</a>
 
                                 </div>
@@ -81,7 +81,7 @@
                                                         {{ Str::limit($notice->notice, 100) }}
                                                     </p>
                                                     <div class="grid grid-cols-2 gap-4 content-center">
-                                                        <a href="{{ route('institute.notice.single', [$institute, $notice->id]) }}"
+                                                        <a href="{{ route('institute.department.notice.single', [$institute, $department, $notice->id]) }}"
                                                             class="content-center">
                                                             <p
                                                                 class="block text-indigo-400 font-bold  hover:text-slate-800 transition duration-200">
@@ -93,10 +93,10 @@
                                                             @if ($is_admin)
                                                             <x-button-blank-link
                                                             class="bg-teal-600 float-end ms-3" 
-                                                            href="{{ route('institute.notice.edit-form', [$institute, $notice]) }}">
+                                                            href="{{ route('institute.department.notice.edit-form', [ $institute, $department, $notice]) }}">
                                                             Edit
                                                             </x-button-blank-link>
-                                                            <form action="{{ route('institute.notice.delete', [$institute, $notice]) }}" method="POST">
+                                                            <form action="{{ route('institute.department.notice.delete', [$institute, $department, $notice]) }}" method="POST">
                                                                 @csrf
                                                                 @method('DELETE')
                                                                 <x-button-blank-submit
