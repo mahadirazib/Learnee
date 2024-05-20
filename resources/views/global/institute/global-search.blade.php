@@ -160,7 +160,7 @@
 
 
 
-                @if (auth()->user()->account_type == 0)
+                @if (auth()->user()->account_type == "Faculty")
                   
                 <h2 class="font-bold text-2xl mb-4">Actions:</h2>
                 <hr>

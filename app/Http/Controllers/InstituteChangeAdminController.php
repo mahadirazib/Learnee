@@ -73,12 +73,16 @@ class InstituteChangeAdminController extends Controller
 
     public function institute_owner_update(Request $request, $institute_id){
 
+        $data = $request->validate([
+            'new_owner' => ['required', 'numeric']
+        ]);
+
         $institute = Institute::find( $institute_id );
         $new_owner = $request->new_owner;
 
         $user = auth()->user();
 
-        if($new_owner && $institute->created_by == $user->id){
+        if($institute->created_by == $user->id){
             $institute->created_by = $new_owner;
             $institute->update();
     
@@ -91,6 +95,10 @@ class InstituteChangeAdminController extends Controller
 
 
     public function institute_head_update(Request $request, $institute_id){
+
+        $data = $request->validate([
+            'new_head' => ['required', 'numeric']
+        ]);
 
         $institute = Institute::find( $institute_id );
         $new_head = $request->new_head;

@@ -84,7 +84,7 @@
                                                     <input name="new_owner" id="new_owner" type="hidden">
 
                                                     <div id="search-results"
-                                                        class="absolute mt-1 bg-white border border-gray-300 rounded-md shadow-lg z-10 hidden">
+                                                        class="absolute mt-1 bg-white border border-gray-300 rounded-md shadow-lg z-10 hidden h-60 overflow-y-auto">
                                                         <!-- Search results will be displayed here -->
                                                     </div>
 
@@ -226,7 +226,7 @@
 
                                 <p class="font-normal text-sm">
                                     Phone Number:
-                                    {{ $institute->institute_head_mobile_number ? $institute->institute_head_mobile_number : 'Not given' }}
+                                    {{ isset($institute->institute_head_mobile_number) ? $institute->institute_head_mobile_number : 'Not given' }}
                                 </p>
 
                             </div>
@@ -247,7 +247,7 @@
                                                     <input name="new_head" id="new_head" type="hidden">
 
                                                     <div id="search-results-for-head"
-                                                        class="absolute mt-1 bg-white border border-gray-300 rounded-md shadow-lg z-10 hidden">
+                                                        class="absolute mt-1 bg-white border border-gray-300 rounded-md shadow-lg z-10 hidden h-60 overflow-y-auto">
                                                         <!-- Search results will be displayed here -->
                                                     </div>
 
@@ -369,38 +369,48 @@
 
                             <div>
 
-                                <h2 class="font-bold text-2xl"> Add new admins: </h2>
+                                <div class="grid grid-cols-8">
+                                    <div class="col-span-4">
+                                        <h2 class="font-bold text-2xl"> Add new admins: </h2>
+                                    </div>
+
+                                    <div class="col-span-4">
+                                        <div class=" grid grid-cols-2">
+                                            <div class="w-full">
+                                                <x-input id="fetch-users" class="block w-full" type="text" name=" "
+                                                    :value="old('Search')" />
+    
+                                                <div id="user-list"
+                                                    class="absolute bg-white border border-gray-300 rounded-md shadow-lg z-10 hidden max-h-60 overflow-y-auto">
+                                                    <!-- Search results will be displayed here -->
+                                                </div>
+                                            </div>
+    
+                                            <div>
+                                                <div class="inline ms-3">
+                                                    <x-button-blank-link class="outline outline-2 bg-gray-600 ms-auto p-2"
+                                                        id="searchUser">
+                                                        Search
+                                                    </x-button-blank-link>
+                                                </div>
+
+                                                <div class="inline float-end">
+                                                    <x-button class="outline outline-2 bg-teal-600 ms-auto p-2">
+                                                        Add New Admins
+                                                    </x-button>
+                                                </div>
+    
+                                            </div>
+    
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+                                
 
                                 <div class=" mt-5 mb-5">
-
-                                    <div class=" grid grid-cols-2">
-                                        <div class="max-w-xl">
-                                            <x-input id="fetch-users" class="block w-full" type="text" name=" "
-                                                :value="old('Search')" />
-
-                                            <div id="user-list"
-                                                class="absolute bg-white border border-gray-300 rounded-md shadow-lg z-10 hidden">
-                                                <!-- Search results will be displayed here -->
-                                            </div>
-                                        </div>
-
-                                        <div>
-                                            <div class="inline ms-3">
-                                                <x-button-blank-link class="outline outline-2 bg-gray-600 ms-auto p-2"
-                                                    id="searchUser">
-                                                    Search
-                                                </x-button-blank-link>
-                                            </div>
-
-                                            <div class="inline ms-5">
-                                                <x-button class="outline outline-2 bg-teal-600 ms-auto p-2">
-                                                    Add New Admins
-                                                </x-button>
-                                            </div>
-
-                                        </div>
-
-                                    </div>
 
                                     <div class="">
                                         <div id="selected-users" class="content-fit">
@@ -544,7 +554,7 @@
 
                                     <p class="font-normal text-sm">
                                         Phone Number:
-                                        {{ $admin->mobile_number ? $admin->institute_head_mobile_number : 'Not given' }}
+                                        {{ $admin->mobile_number ? $admin->mobile_number : 'Not given' }}
                                     </p>
 
                                 </div>

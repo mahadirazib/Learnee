@@ -4,12 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Models\DepartmentFaculties;
 use App\Models\DepartmentNotice;
+use App\Models\DepartmentStudents;
 use Illuminate\Http\Request;
 
 use App\Models\Institute;
 use App\Models\User;
 use App\Models\InstituteDepartment;
 use App\Models\InstituteFaculties;
+
+
+use Illuminate\Support\Facades\DB;
+
 
 class InstituteDepartmentController extends Controller
 {
@@ -41,7 +46,7 @@ class InstituteDepartmentController extends Controller
 
         if($department->institute_id == $institute_id){            
             $user = auth()->user();
-            $is_admin = is_institute_admin($institute_id, $user->id );
+            $is_admin = is_department_admin($institute_id, $department_id, $user->id );
             $is_institute_member = is_institute_faculty_or_student($institute_id, $user->id );
             $is_department_member = is_department_faculty_or_student($institute_id, $department_id, $user->id );
 
@@ -77,8 +82,24 @@ class InstituteDepartmentController extends Controller
         })
         ->get();
 
-    
-        return response()->json($users);
+        $adminsId = Institute::select('admins')
+        ->where('id', $institute_id)
+        ->first();
+
+        $adminsArray = array_map('intval', $adminsId->admins);
+
+        $admins = User::whereIn('id', $adminsArray)
+                ->where(function ($query) use ($searchName) {
+                    $query->where('name', 'like', '%' . $searchName . '%')
+                        ->orWhere('email', 'like', '%' . $searchName . '%');
+                })
+                ->get();
+
+
+        $allUsers = $users->merge($admins)->unique('id');
+
+
+        return response()->json($allUsers);
     }
 
 
@@ -105,10 +126,11 @@ class InstituteDepartmentController extends Controller
             'passkeys.*'=> ['nullable', 'string'],
             'subjects'=> [ 'nullable', 'json'],
         ]);
-
-        $data['subjects'] = json_decode($request['subjects']);
+        
         $user = auth()->user();
         $data['created_by'] = $user->id;
+        
+        $data['subjects'] = json_decode($request['subjects']);
 
 
         $existing_department = InstituteDepartment::select('name')
@@ -185,12 +207,21 @@ class InstituteDepartmentController extends Controller
         if(is_institute_faculty_or_student($institute_id, $user_id )){
             if(!empty($department_passkeys->passkeys) && $department_passkeys->passkeys != null ){
                 return view('institute.department.join', ['institute'=> $institute_id, 'department' => $department_id ]);
+
             }else{
 
-                $department_faculty = DepartmentFaculties::create([
-                    'faculty' => $user_id,
-                    'department' => $department_id
-                ]);
+                if($user->account_type == 'Faculty'){
+                    $department_faculty = DepartmentFaculties::create([
+                        'faculty' => $user_id,
+                        'department' => $department_id
+                    ]);
+                }else{
+                    $department_student = DepartmentStudents::create([
+                        'student' => $user_id,
+                        'department' => $department_id
+                    ]);
+                }
+
 
                 return redirect()->route('institute.department.view-single', [$institute_id, $department_id])->with('success','Joined department successfully');
             }
@@ -216,11 +247,21 @@ class InstituteDepartmentController extends Controller
         // dd(in_array( $user_given_passkey['passkey'], $institute_passkeys->passkeys), $institute_passkeys->passkeys, "User given: ".$user_given_passkey['passkey']);
 
         if(in_array($user_given_passkey['passkey'], $department_passkeys->passkeys)){
-            $department_faculty = DepartmentFaculties::create([
-                'faculty' => $user_id,
-                'department' => $department_id,
-                'passkey_upon_joining' => $user_given_passkey['passkey']
-            ]);
+
+            if($user->account_type == 'Faculty'){
+                $department_faculty = DepartmentFaculties::create([
+                    'faculty' => $user_id,
+                    'department' => $department_id,
+                    'passkey_upon_joining' => $user_given_passkey['passkey']
+                ]);
+            }else{
+                $department_student = DepartmentStudents::create([
+                    'student' => $user_id,
+                    'department' => $department_id,
+                    'passkey_upon_joining' => $user_given_passkey['passkey']
+                ]);
+
+            }
 
             return redirect()->route('institute.department.view-single', [$institute_id, $department_id])->with('success','Joined department successfully');
         }else{

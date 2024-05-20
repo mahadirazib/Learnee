@@ -37,6 +37,7 @@ class RegisteredUserController extends Controller
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'mobile_number' => ['nullable', 'string', 'max:15'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
             'account_type' => ['required', 'numeric','digits:1'],
             'profile_picture' => ['nullable','image','mimes:jpeg,png,jpg,gif,svg'],
@@ -54,6 +55,7 @@ class RegisteredUserController extends Controller
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
+            'mobile_number' => $request->mobile_number,
             'password' => Hash::make($request->password),
             'account_type' => $request->account_type,
             // 'image' => $request->hasFile('profile_picture') ? $request->file('profile_picture')->store('public/profile_pictures') : null,

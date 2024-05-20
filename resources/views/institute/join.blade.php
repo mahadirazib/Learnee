@@ -17,7 +17,7 @@
 
 
             <div class="mb-4 text-sm text-gray-600">
-              {{ __('Please enter the passkeys to join this institute.') }}
+              {{ __('Please enter the passkey to join this institute.') }}
             </div>
 
             <!-- passkey -->

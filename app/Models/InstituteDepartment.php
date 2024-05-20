@@ -15,6 +15,7 @@ class InstituteDepartment extends Model
         'name',
         'description',
         'department_head',
+        'created_by',
         'passkeys',
         'admins',
         // subjects= ['name'= name, 'reward'= rewards(parcentage/marks/credit)]

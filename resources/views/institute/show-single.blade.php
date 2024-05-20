@@ -45,7 +45,7 @@
                         <!-- Implement the carousel -->
                         <div class="relative w-full mx-auto">
 
-                            @isset($institute->images)
+                            @if(count($institute->images))
                                 @php
                                     $counter = 1;
                                 @endphp
@@ -59,7 +59,7 @@
                                     @else
                                         <div class="slide relative">
                                             <img class="w-full h-[300px] object-cover" alt="Institute Image"
-                                                src="{{ asset('storage/default_images/institute_gellary/image (' . $counter++ . ').jpg') }}">
+                                                src="{{ asset('storage/default_images/institute_gellary/image ('. $counter++ .').jpg') }}">
                                         </div>
                                     @endif
                                 @endforeach
@@ -74,11 +74,15 @@
                             @else
                                 <div class="slide relative">
                                     <img class="w-full h-[300px] object-cover" alt="Institute Image"
-                                        src="{{ asset('storage/default_images/institute_gellary/image (5).jpg') }}">
+                                        src="{{ asset('storage/default_images/institute_gellary/image ('.rand(1,20).').jpg') }}">
                                 </div>
                                 <div class="slide relative">
                                     <img class="w-full h-[300px] object-cover" alt="Institute Image"
-                                        src="{{ asset('storage/default_images/institute_gellary/image (6).jpg') }}">
+                                        src="{{ asset('storage/default_images/institute_gellary/image ('.rand(1,20).').jpg') }}">
+                                </div>
+                                <div class="slide relative">
+                                    <img class="w-full h-[300px] object-cover" alt="Institute Image"
+                                        src="{{ asset('storage/default_images/institute_gellary/image ('.rand(1,20).').jpg') }}">
                                 </div>
                             @endisset
 

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DepartmentChangeAdminController;
 use App\Http\Controllers\DepartmentNoticeController;
 use App\Http\Controllers\InstituteChangeAdminController;
 use App\Http\Controllers\InstituteController;
@@ -60,13 +61,19 @@ Route::get('institute/{institute_id}', [InstituteController::class, 'show_single
 Route::get('institute/{institute_id}/join', [InstituteController::class, 'join'])->middleware(['auth'])->name('institute.join');
 Route::post('institute/{institute_id}/join', [InstituteController::class, 'join_confirm'])->middleware(['auth'])->name('institute.join.confirm');
 
-// Institute Admin change, delete 
+// Institute and Department Admin change, delete 
 Route::get('institute/{institute_id}/admin_list', [InstituteChangeAdminController::class, 'institute_admin_list'])->middleware(['auth', 'idtype.teacher', 'institute.admin'])->name('institute.admin.list');
 Route::post('institute/{institute_id}/admin_update', [InstituteChangeAdminController::class, 'institute_admin_update'])->middleware(['auth', 'idtype.teacher', 'institute.ownerandhead'])->name('institute.admin.update');
 Route::post('institute/{institute_id}/owner/change', [InstituteChangeAdminController::class, 'institute_owner_update'])->middleware(['auth', 'idtype.teacher', 'institute.ownerandhead'])->name('institute.owner.update');
 Route::post('institute/{institute_id}/institute_head/change', [InstituteChangeAdminController::class, 'institute_head_update'])->middleware(['auth', 'idtype.teacher', 'institute.ownerandhead'])->name('institute.head.update');
 Route::post('institute/{institute_id}/admin/{admin_id}/change_role', [InstituteChangeAdminController::class, 'institute_admin_change_role'])->middleware(['auth', 'idtype.teacher', 'institute.ownerandhead'])->name('institute.admin.change_role');
 Route::delete('institute/{institute_id}/admin_delete/{admin_id}', [InstituteChangeAdminController::class, 'institute_admin_delete'])->middleware(['auth', 'idtype.teacher', 'institute.ownerandhead'])->name('institute.admin.delete');
+// ---------------------------------------------------------
+Route::get('institute/{institute_id}/department/{department_id}/admin_list', [DepartmentChangeAdminController::class, 'dept_admin_list'])->middleware(['auth', 'idtype.teacher', 'institute.department.admin'])->name('institute.department.admin.list');
+Route::post('institute/{institute_id}/department/{department_id}/admin_update', [DepartmentChangeAdminController::class, 'dept_admin_update'])->middleware(['auth', 'idtype.teacher', 'institute.admin'])->name('institute.department.admin.update');
+Route::post('institute/{institute_id}/department/{department_id}/creator/change', [DepartmentChangeAdminController::class, 'dept_creator_update'])->middleware(['auth', 'idtype.teacher', 'institute.admin'])->name('institute.department.creator.update');
+Route::post('institute/{institute_id}/department/{department_id}/dept_head/change', [DepartmentChangeAdminController::class, 'dept_head_update'])->middleware(['auth', 'idtype.teacher', 'institute.admin'])->name('institute.department.head.update');
+Route::delete('institute/{institute_id}/department/{department_id}/admin_delete', [DepartmentChangeAdminController::class, 'dept_admin_delete'])->middleware(['auth', 'idtype.teacher', 'institute.admin'])->name('institute.department.admin.delete');
 
 
 // Institute Notices 
@@ -88,8 +95,8 @@ Route::get('institute/{institute_id}/department', [InstituteDepartmentController
 Route::get('institute/{institute_id}/department/create', [InstituteDepartmentController::class, 'create'])->middleware(['auth', 'idtype.teacher', 'institute.admin'])->name('institute.department.create');
 Route::post('institute/{institute_id}/department/store', [InstituteDepartmentController::class, 'store'])->middleware(['auth', 'idtype.teacher', 'institute.admin' ])->name('institute.department.store');
 Route::get('institute/{institute_id}/department/{department_id}', [InstituteDepartmentController::class, 'view'])->middleware(['auth'])->name('institute.department.view-single');
-Route::get('institute/{institute_id}/department/{department_id}/edit', [InstituteDepartmentController::class, 'edit'])->middleware(['auth', 'idtype.teacher', 'institute.admin'])->name('institute.department.edit-form');
-Route::post('institute/{institute_id}/department/{department_id}/update', [InstituteDepartmentController::class, 'update'])->middleware(['auth', 'idtype.teacher', 'institute.admin' ])->name('institute.department.update');
+Route::get('institute/{institute_id}/department/{department_id}/edit', [InstituteDepartmentController::class, 'edit'])->middleware(['auth', 'idtype.teacher', 'institute.department.admin'])->name('institute.department.edit-form');
+Route::post('institute/{institute_id}/department/{department_id}/update', [InstituteDepartmentController::class, 'update'])->middleware(['auth', 'idtype.teacher', 'institute.department.admin' ])->name('institute.department.update');
 Route::get('institute/{institute_id}/department/{department_id}/join', [InstituteDepartmentController::class, 'join'])->middleware(['auth', 'institute.facultyandstudent'])->name('institute.department.join');
 Route::post('institute/{institute_id}/department/{department_id}/join_confirn', [InstituteDepartmentController::class, 'join_confirm'])->middleware(['auth', 'institute.facultyandstudent'])->name('institute.department.join.confirm');
 

@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 
 use App\Models\Institute;
 use App\Models\InstituteFaculties;
+use App\Models\InstituteStudents;
 use App\Models\User;
 use App\Models\InstituteNotice;
 use App\Models\InstituteDepartment;
@@ -14,9 +15,11 @@ use App\Models\InstituteDepartment;
 class InstituteController extends Controller
 {
     public function index(Request $request){
+
         $user = auth()->user();
+        $userId = $user->id;
+
         if($user->account_type == "Faculty") {
-            $userId = $user->id;
             $administrative = DB::table('institutes')
             ->whereRaw('JSON_CONTAINS(admins, ?)', ["\"$userId\""])
             ->orWhereJsonContains('admins', '"'.$userId.'"')
@@ -56,11 +59,20 @@ class InstituteController extends Controller
 
     
             return view('institute.index-for-faculty', ['administrative_access'=> $administrative, 'general_access' => $institutes]);
+
         }else{
 
+            $institutes = Institute::select('institutes.id', 'institutes.name', 'institutes.description')
+                ->join('institute_students', 'institute_students.institute', '=', 'institutes.id')
+                ->join('users', 'institute_students.student', '=', 'users.id')
+                ->where('users.id', $userId)
+                ->distinct()
+                ->get();
+                
+            return view('institute.index-for-student', ['general_access' => $institutes]);
         }
 
-        return view('message', ['message'=> "Something went wrong!"]);
+        // return view('message', ['message'=> "Something went wrong!"]);
 
     }
 
@@ -238,6 +250,25 @@ class InstituteController extends Controller
             }else{
                 return redirect()->route('institute.view-single', $id)->with('failed','You are already a member');
             }
+        }else{
+            $is_institute_member = InstituteStudents::select('*')
+                            ->where('institute', $id)
+                            ->where('student', $user_id)
+                            ->get();
+            if($is_institute_member->isEmpty()){
+                if(!empty($institute_passkeys->passkeys) && $institute_passkeys->passkeys != null ){
+                    return view('institute.join', ['institute'=> $id]);
+                }else{
+                    $institute_faculty = InstituteStudents::create([
+                        'student' => $user_id,
+                        'institute' => $id
+                    ]);
+
+                    return redirect()->route('institute.view-single', $id)->with('success','Joined institute successfully');
+                }
+            }else{
+                return redirect()->route('institute.view-single', $id)->with('failed','You are already a member');
+            }
         }
         
     }
@@ -257,11 +288,22 @@ class InstituteController extends Controller
         // dd(in_array( $user_given_passkey['passkey'], $institute_passkeys->passkeys), $institute_passkeys->passkeys, "User given: ".$user_given_passkey['passkey']);
 
         if(in_array($user_given_passkey['passkey'], $institute_passkeys->passkeys)){
-            $institute_faculty = InstituteFaculties::create([
-                'faculty' => $user_id,
-                'institute' => $institute_id,
-                'passkey_upon_joining' => $user_given_passkey['passkey']
-            ]);
+
+            $user = auth()->user();
+            
+            if($user->account_type == 'Faculty'){
+                $institute_faculty = InstituteFaculties::create([
+                    'faculty' => $user_id,
+                    'institute' => $institute_id,
+                    'passkey_upon_joining' => $user_given_passkey['passkey']
+                ]);
+            }else{
+                $institute_student = InstituteStudents::create([
+                    'student' => $user_id,
+                    'institute' => $institute_id,
+                    'passkey_upon_joining' => $user_given_passkey['passkey']
+                ]);
+            }
 
             return redirect()->route('institute.view-single', $institute_id)->with('success','Joined institute successfully');
         }else{

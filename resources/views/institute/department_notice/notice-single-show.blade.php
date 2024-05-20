@@ -35,7 +35,7 @@
                       <p class="font-normal text-sm">
                         Given by:
                         <span class="text-base font-semibold"> 
-                          <a href="/"> {{ $notice->name }} </a> 
+                          <a href="{{route('user.view', $notice->given_by)}}"> {{ $notice->name }} </a> 
                         </span>
                       </p>
 

@@ -19,12 +19,16 @@
                           </span>
                       </div>
                       <div class="ms-auto">
-                          @if ($is_admin)
-                              <x-link-button class="mt-4" href="/">
-                                Add admin
-                              </x-link-button>
-                          @endif
+                        @if ($is_admin)
+                        <x-button-blank-link class="outline outline-2 text-gray-800 bg-gray-800" href="{{route('institute.notice.create', $institute->id)}}">
+                          Add new Notice
+                        </x-button-blank-link>
+                        @endif
                       </div>
+                  </div>
+
+                  <div class="mt-5 mb-5">
+                    <hr>
                   </div>
 
 
@@ -32,17 +36,10 @@
 
 
                   <!-- Institute Notice -->
-                  <div class="mt-10">
+                  <div class="mt-5">
+
                       <div class="grid grid-cols-2 gap-4">
                         <h2 class="font-bold text-2xl">All Notices: </h2>
-                        
-                        <div class="ms-auto">
-                          @if ($is_admin)
-                          <x-button-blank-link class="outline outline-2 text-gray-800 bg-gray-800" href="{{route('institute.notice.create', $institute->id)}}">
-                            Add new Notice
-                          </x-button-blank-link>
-                          @endif
-                        </div>
                       </div>
                       
                       <div class="mt-5 mb-5 grid grid-cols-2 gap-4">

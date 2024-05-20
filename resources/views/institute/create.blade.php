@@ -57,7 +57,7 @@
                                                     <input name="institute_head" id="institute_head" type="hidden">
 
                                                     <div id="search-results"
-                                                        class="absolute top-full left-0 mt-1 bg-white border border-gray-300 rounded-md shadow-lg z-10 hidden">
+                                                        class="absolute top-full left-0 mt-1 bg-white border border-gray-300 rounded-md shadow-lg z-10 hidden max-h-60 overflow-y-auto">
                                                         <!-- Search results will be displayed here -->
                                                     </div>
 
@@ -148,13 +148,13 @@
                                                         <input name=" " id="admins" type="hidden">
 
                                                         <div id="user-list"
-                                                            class="absolute top-full left-0 mt-1 bg-white border border-gray-300 rounded-md shadow-lg z-10 hidden">
+                                                            class="absolute top-full left-0 mt-1 bg-white border border-gray-300 rounded-md shadow-lg z-10 hidden max-h-60 overflow-y-auto">
                                                             <!-- Search results will be displayed here -->
                                                         </div>
 
                                                     </div>
 
-                                                    <div class="flex flex-wrap gap-2 mt-3" id="selected-users">
+                                                    <div class="flex flex-wrap gap-2 mt-3 " id="selected-users">
                                                         <!-- Selected users will be displayed here -->
                                                     </div>
 

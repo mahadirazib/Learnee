@@ -409,40 +409,35 @@
         }
     </style>
 
-    <style>
-        body {
-            font-family: 'Nunito', sans-serif;
-        }
-    </style>
 </head>
 
 <body class="antialiased">
     <div
         class="relative flex items-top justify-center min-h-screen bg-gray-100 dark:bg-gray-900 sm:items-center py-4 sm:pt-0">
         @if (Route::has('login'))
-            <div class="hidden fixed top-0 right-0 px-6 py-4 sm:block">
+            <div class="hidden fixed top-0 mt-8 px-6 py-4 sm:block">
                 @auth
                     <a href="{{ url('/dashboard') }}"
-                        class="text-sm text-gray-700 dark:text-gray-500 underline">Dashboard</a>
+                        class="text-sm text-gray-700 dark:text-white underline" style="font-weight: bold;">Dashboard</a>
                 @else
-                    <a href="{{ route('login') }}" class="text-base text-gray-700 dark:text-white underline">Log in</a>
+                    <a href="{{ route('login') }}" class="font-bold text-base text-gray-700 dark:text-white underline" style="font-weight: bold;">Log in</a>
 
                     @if (Route::has('register'))
                         <a href="{{ route('register') }}"
-                            class="ml-4 text-base text-gray-700 dark:text-gray-500 underline">Register</a>
+                            class="ml-4 font-bold text-base text-gray-700 dark:text-gray-500 underline" style="font-weight: bold;">Register</a>
                     @endif
                 @endauth
             </div>
         @endif
 
-        <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
+        <div class="max-w-6xl mx-auto sm:px-6 p-24 lg:px-8">
 
 
             <div class="mt-8 bg-white dark:bg-gray-800 overflow-hidden shadow sm:rounded-lg">
 
 
                 <div class="ml-4 text-lg leading-7 font-semibold">
-                    <h1 class="text-gray-900 dark:text-white mb-0 text-c">Welcome to journey of learning.</h1>
+                    <h1 class="text-gray-900 dark:text-white mb-0 text-c" style="text-align: center">Welcome to the journey of learning.</h1>
                 </div>
 
                 <div class="p-6 pt-0">

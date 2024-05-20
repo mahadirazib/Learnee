@@ -15,11 +15,11 @@ class CreateInstituteDepartmentsTable extends Migration
     {
         Schema::create('institute_departments', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('created_by')->default(0);
             $table->foreignId('institute')->constrained('institutes')->onDelete('CASCADE');
             $table->string('name');
             $table->longText('description');
             $table->foreignId('department_head')->nullable()->constrained('users')->onDelete('SET NULL');
+            $table->foreignId('created_by')->nullable()->constrained('users')->onDelete('SET NULL');
             $table->json('passkeys')->nullable();
             $table->json('admins')->nullable();
             // subjects= ['name'= name, 'reward'= rewards(parcentage/marks/credit)]

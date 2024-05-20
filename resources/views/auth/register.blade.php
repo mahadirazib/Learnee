@@ -29,6 +29,15 @@
             </div>
 
 
+            <!-- Mobile Number -->
+            <div class="mt-4">
+                <x-label for="mobile_number" :value="__('Phone Number')" />
+
+                <x-input id="mobile_number" class="block mt-1 w-full" type="text" name="mobile_number" :value="old('email')"
+                    required />
+            </div>
+
+
             <!-- Account type -->
             <div class="mt-4">
 

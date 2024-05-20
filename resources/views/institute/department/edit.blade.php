@@ -16,13 +16,27 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
-                    
-                    <div class="mb-5">
-                        <h1 class="font-bold text-4xl"> {{ $institute->name }} </h1>
-                        <input type="hidden" id="instituteName" value="{{ $institute->id }}">
-                        <span class="text-sm text-gray-500"> Since: {{ $institute->created_at->format('j F, Y') }}
-                        </span>
+
+
+                    <div class="grid grid-cols-2 mb-5 content-center">
+                        <div class="">
+                            <h1 class="font-bold text-4xl"> {{ $institute->name }} </h1>
+                            <input type="hidden" id="instituteName" value="{{ $institute->id }}">
+                            <span class="text-sm text-gray-500"> Since: {{ $institute->created_at->format('j F, Y') }}
+                            </span>
+                        </div>
+
+                        <div>
+                            <div class="float-end">
+                                <x-button-blank-link class="outline outline-2 text-gray-800 bg-gray-800 ms-auto" href="{{route('institute.department.admin.list', [$institute->id, $department->id])}}">
+                                    Change Admins
+                                </x-button-blank-link>
+                            </div>
+                        </div>
+                        
                     </div>
+                    
+
 
                     <div class="mb-5 mt-5">
                         <hr>
@@ -31,6 +45,9 @@
                     <h1 class="font-semibold text-xl mb-8" style="margin: 0 0 15px">
                         Edit <span class="text-teal-600 font-bold"> <q>{{ $department->name }}</q> </span> department:
                     </h1>
+
+
+
 
                     <!-- Validation Errors -->
                     <x-auth-validation-errors class="mb-4" :errors="$errors" />

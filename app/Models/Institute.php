@@ -37,6 +37,19 @@ class Institute extends Model
     }
 
 
+
+    public function createdBy()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
+
+    public function instituteHead()
+    {
+        return $this->belongsTo(User::class, 'institute_head');
+    }
+
+
+
     // Accessor to deserialize JSON data
     public function getImagesAttribute($value)
     {
