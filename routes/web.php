@@ -77,6 +77,10 @@ Route::post('institute/{institute_id}/department/{department_id}/dept_head/chang
 Route::delete('institute/{institute_id}/department/{department_id}/admin_delete', [DepartmentChangeAdminController::class, 'dept_admin_delete'])->middleware(['auth', 'idtype.teacher', 'institute.admin'])->name('institute.department.admin.delete');
 
 
+// Json responses faculty list 
+Route::get('/users_list', [ InstituteController::class,'teacher_list_json'])->middleware(['auth', 'idtype.teacher'])->name('search-user');
+
+
 // Institute Notices 
 Route::get('institute/{institute_id}/notice', [InstituteNoticeController::class, 'index'])->middleware(['auth', 'institute.facultyandstudent'])->name('institute.notice.all');
 Route::get('institute/{institute_id}/notice/create', [InstituteNoticeController::class, 'create'])->middleware(['auth', 'idtype.teacher', 'institute.admin' ])->name('institute.notice.create');
@@ -86,9 +90,9 @@ Route::get('institute/{institute_id}/notice/{notice_id}/edit', [InstituteNoticeC
 Route::post('institute/{institute_id}/notice/{notice_id}/update', [InstituteNoticeController::class, 'update'])->middleware(['auth', 'idtype.teacher', 'institute.admin' ])->name('institute.notice.update');
 Route::delete('institute/{institute_id}/notice/{notice_id}/delete', [InstituteNoticeController::class, 'destroy'])->middleware(['auth', 'idtype.teacher', 'institute.admin'])->name('institute.notice.delete');
 
+
 // Json responses faculty list 
-Route::get('/users_list', [ InstituteController::class,'teacher_list_json'])->middleware(['auth', 'idtype.teacher'])->name('search-user');
-Route::get('/institute_teacher_list/{institute_id}', [ InstituteDepartmentController::class,'teacher_list_json'])->middleware(['auth', 'idtype.teacher'])->name('search-institute-teacher');
+Route::get('/institute_teacher_list/{institute_id}', [ InstituteDepartmentController::class,'teacher_list_json'])->middleware(['auth', 'idtype.teacher', 'institute.admin' ])->name('search-institute-teacher');
 
 
 // Institute Departments related 
@@ -115,7 +119,11 @@ Route::delete('institute/{institute_id}/department/{department_id}/notice/{notic
 
 // Classrooms inside institutes
 Route::get('institute/{institute_id}/department/{department_id}/classroom/create', [ClassroomController::class, 'create'])->middleware(['auth', 'idtype.teacher', 'institute.department.admin'])->name('institute.department.classroom.create');
+Route::post('institute/{institute_id}/department/{department_id}/classroom/create', [ClassroomController::class, 'store'])->middleware(['auth', 'idtype.teacher', 'institute.department.admin'])->name('institute.department.classroom.store');
 
+
+// Json responses faculty list 
+Route::get('department_teacher_list/{institute_id}/{department_id}', [ ClassroomController::class,'teacher_list_json'])->middleware(['auth', 'idtype.teacher', 'institute.department.admin' ])->name('search-department-teacher');
 
 
 

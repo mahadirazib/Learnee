@@ -24,7 +24,6 @@ class CreateDepartmentClassroomsTable extends Migration
             $table->json('passkeys')->nullable();
             $table->json('topics')->nullable();
             $table->json('exam_types')->nullable();
-            $table->json('number_distribution')->nullable();
             $table->boolean('status')->default(true);
             $table->timestamps();
         });

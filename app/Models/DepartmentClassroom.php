@@ -19,7 +19,6 @@ class DepartmentClassroom extends Model
         'passkeys',
         'topics',
         'exam_types',
-        'number_distribution',
         'status'
     ];
 
