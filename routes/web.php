@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ClassroomController;
 use App\Http\Controllers\DepartmentChangeAdminController;
 use App\Http\Controllers\DepartmentNoticeController;
 use App\Http\Controllers\InstituteChangeAdminController;
@@ -109,6 +110,15 @@ Route::get('institute/{institute_id}/department/{department_id}/notice/{notice_i
 Route::get('institute/{institute_id}/department/{department_id}/notice/{notice_id}/edit', [DepartmentNoticeController::class, 'edit'])->middleware(['auth', 'idtype.teacher', 'institute.department.admin' ])->name('institute.department.notice.edit-form');
 Route::post('institute/{institute_id}/department/{department_id}/notice/{notice_id}/update', [DepartmentNoticeController::class, 'update'])->middleware(['auth', 'idtype.teacher', 'institute.department.admin' ])->name('institute.department.notice.update');
 Route::delete('institute/{institute_id}/department/{department_id}/notice/{notice_id}/delete', [DepartmentNoticeController::class, 'destroy'])->middleware(['auth', 'idtype.teacher', 'institute.department.admin'])->name('institute.department.notice.delete');
+
+
+
+// Classrooms inside institutes
+Route::get('institute/{institute_id}/department/{department_id}/classroom/create', [ClassroomController::class, 'create'])->middleware(['auth', 'idtype.teacher', 'institute.department.admin'])->name('institute.department.classroom.create');
+
+
+
+
 
 
 

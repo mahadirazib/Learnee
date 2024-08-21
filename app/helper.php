@@ -72,6 +72,11 @@ if(!function_exists("is_department_admin")){
     if(is_institute_admin($instituteId, $userId)){
       return true;
     }else{
+
+      if(!is_institute_faculty_or_student($instituteId, $userId)){
+        return false;
+      }
+      
       $is_administrator = DB::table('institute_departments')
       ->where('id', $deptId)
       ->where('institute', $instituteId)

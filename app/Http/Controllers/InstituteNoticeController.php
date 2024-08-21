@@ -14,7 +14,7 @@ class InstituteNoticeController extends Controller
         $institute = Institute::find($id);
         $notices = InstituteNotice::where("institute", $institute->id)->orderBy("created_at", "desc")->paginate(10);
 
-        $is_admin = false;
+        // $is_admin = false;
         $is_admin = is_institute_admin($id, auth()->user()->id);
 
         return view("institute.notice.notice-all", ["institute"=> $institute,"notices"=> $notices, "is_admin"=> $is_admin, "is_member"=> false]);

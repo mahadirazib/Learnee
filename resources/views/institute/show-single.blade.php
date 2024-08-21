@@ -64,13 +64,6 @@
                                     @endif
                                 @endforeach
 
-                                {{-- @if (file_exists($institute->images[0]))
-                                    @foreach ($institute->images as $image)
-                                        <div class="slide relative">
-                                            <img class="w-full h-[300px] object-cover" alt="Institute Image"
-                                                src="{{ asset('storage/institute_images/' . $image) }}">
-                                        </div>
-                                    @endforeach --}}
                             @else
                                 <div class="slide relative">
                                     <img class="w-full h-[300px] object-cover" alt="Institute Image"

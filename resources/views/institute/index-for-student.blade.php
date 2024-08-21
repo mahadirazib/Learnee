@@ -53,7 +53,7 @@
                                     <p class="text-gray-600">
                                       {{ Str::limit($institute->description, 100) }}
                                     </p>
-                                    <p class="block text-indigo-400 hover:text-slate-600 transition duration-200"> Details → </p>
+                                    <p class="block text-indigo-400 hover:text-slate-600 transition duration-200 font-bold"> Details → </p>
                                   </div>
                                 </div>
                               </div>

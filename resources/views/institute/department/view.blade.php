@@ -45,8 +45,95 @@
 
 
 
-                  <!-- Department Notice -->
+                  <!-- Department Classroom -->
                   @if (isset($notices) && $notices != null)
+                    <div class="mt-10">
+                        <div class="grid grid-cols-2 gap-4 content-center">
+                            <h2 class="font-bold text-2xl"> Class rooms: </h2>
+                            <div class="content-center">
+                                <div class="">
+                                    <div class="flex content-center float-end">
+                                        <a href=" {{ route('institute.department.notice.all', [$institute, $department]) }} "
+                                            class="mt-1 content-center text-gray-600 hover:text-gray-800 font-bold">See all ❯</a>
+                                    </div>
+                                </div>
+                                
+                                <div class=" float-end me-5">
+                                    @if ($is_admin)
+                                    <x-button-blank-link class="outline outline-2 text-gray-800 bg-gray-800 ms-auto" href=" {{ route('institute.department.classroom.create', [$institute, $department] ) }} ">
+                                        Add new Class
+                                    </x-button-blank-link>
+                                    @endif
+                                </div>
+    
+                            </div>
+                        </div>
+
+
+                        <div class="mt-5 mb-5 grid grid-cols-2 gap-4">
+                            @if (count($notices))
+                                @foreach ($notices as $notice)
+                                    <div class="max-w-7xl mx-auto">
+                                        <div class="relative group">
+                                            <div
+                                                class="relative leading-none px-7 py-6 bg-gray-100 hover:text-slate-600 hover:bg-gray-200 transition duration-200 ring-1 ring-gray-900/5 rounded-lg flex items-top justify-start space-x-6 ">
+                                                <div class="space-y-2">
+                                                    <h3 class="text-black font-bold">
+                                                        {{ Str::limit($notice->title, 40) }}
+                                                    </h3>
+                                                    <p class="text-gray-600">
+                                                        {{ Str::limit($notice->notice, 100) }}
+                                                    </p>
+                                                    <div class="grid grid-cols-2 gap-4 content-center">
+                                                        <a href="{{ route('institute.department.notice.single', [$institute, $department, $notice->id]) }}"
+                                                            class="content-center">
+                                                            <p
+                                                                class="block text-indigo-400 font-bold  hover:text-slate-800 transition duration-200">
+                                                                Details <span style="size: 20px">→</span>
+                                                            </p>
+                                                        </a>
+
+                                                        <div>
+                                                            @if ($is_admin)
+                                                            <x-button-blank-link
+                                                            class="bg-teal-600 float-end ms-3" 
+                                                            href="{{ route('institute.department.notice.edit-form', [ $institute, $department, $notice]) }}">
+                                                            Edit
+                                                            </x-button-blank-link>
+                                                            <form action="{{ route('institute.department.notice.delete', [$institute, $department, $notice]) }}" method="POST">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                                <x-button-blank-submit
+                                                                    class="bg-red-500 float-end ms-3" href="/">
+                                                                    Delete
+                                                                </x-button-blank-submit>
+                                                            </form>
+                                                            @endif
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            @else
+                                <h3 class="text-black font-bold">
+                                    No Notice Found
+                                </h3>
+                            @endif
+                        </div>
+
+                        <div>
+                            {{ $notices->links() }}
+                        </div>
+
+                    </div>
+                  @endif
+
+
+                  
+                  @if (isset($notices) && $notices != null)
+                  <!-- Department Notices -->
                     <div class="mt-10">
                         <div class="grid grid-cols-2 gap-4 content-center">
                             <h2 class="font-bold text-2xl"> Notices: </h2>

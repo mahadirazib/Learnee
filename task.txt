@@ -1,0 +1,46 @@
+
+Create a model named "PublicPost"
+the model will have below fields:
+  - user(foreign key->ondelete cascade);
+  - title(string)
+  - post(text)
+  - files(array)(max 3 files)
+
+
+
+create following routes:
+  "/public/post" -> (methode: get) (middleware: auth) -> name("public.post")
+        --> this route will show all latest posts. Use pagination.
+        --> Blade template for this route inside "views/global/post/"  (explore.blade.php)
+
+  "/user/{user_id}/post" (methode: get) (middleware: auth) -> name("user.post.all")
+        --> this route will show all the posts from a perticular user. Use pagination for this also.  
+            The posts will be shown in the users profile page. But for now just create a separate template.
+        --> Blade template for this route inside "views/global/post/"  (user_post.blade.php)
+
+  "/user/{user_id}/post/{post_id}" (methode: get) (middleware: auth) -> name("user.post.single")
+        --> this route will show specific post from a perticular user
+        --> Blade template for this route inside "views/global/post/"  (user_post_single.blade.php)  
+
+  "/public/post/create" -> (methode: post) (middleware: auth) -> name("public.post.create")
+        --> this route will show the form for Creating a post
+        --> Blade template for this route inside "views/global/post/"  (create.blade.php)
+
+  "/public/post/store" -> (methode: post) (middleware: auth) -> name("public.post.store")
+        --> this route will store a post in the database
+
+  "/public/post/edit" -> (methode: post) (middleware: auth) -> name("public.post.edit")
+        --> this route will show the form for update
+        --> Blade template for this route inside "views/global/post/"  (edit.blade.php)
+  
+  "/public/post/update" -> (methode: post) (middleware: auth) -> name("public.post.update")
+        --> this route will update a post in the database
+
+  "/public/post/delete" -> (methode: delete) (middleware: auth) -> name("public.post.delete")
+        --> this route will delete a post from the database
+
+
+
+
+Create a controller named "PublicPostController"
+the controller will have the methods same name as the routes.
