@@ -72,5 +72,8 @@ class Kernel extends HttpKernel
 
         'institute.department.admin' => \App\Http\Middleware\DepartmentAdmin::class,
         'institute.department.facultyandstudent' => \App\Http\Middleware\DepartmentFacultyAndStudent::class,
+
+        'institute.department.class.admin' => \App\Http\Middleware\ClassroomAdmin::class,
+        'institute.department.class.facultyandstudent' => \App\Http\Middleware\ClassroomFacultyAndStudent::class,
     ];
 }

@@ -11,6 +11,7 @@ use App\Models\Institute;
 use App\Models\User;
 use App\Models\InstituteDepartment;
 use App\Models\InstituteFaculties;
+use App\Models\DepartmentClassroom;
 
 
 use Illuminate\Support\Facades\DB;
@@ -51,13 +52,15 @@ class InstituteDepartmentController extends Controller
             $is_department_member = is_department_faculty_or_student($institute_id, $department_id, $user->id );
 
             $notices = null;
+            $classes = null;
 
             if($is_admin || $is_department_member){
                 $notices = DepartmentNotice::where('department', $department->id)->paginate(4);
+                $classes = DepartmentClassroom::where('department', $department->id)->paginate(4, ['*'], 'classroom');
             }
 
 
-            return view('institute.department.view', ['institute' => $institute_id, 'department'=> $department, 'notices' => $notices, 'is_admin' => $is_admin, 'is_institute_member'=> $is_institute_member, 'is_department_member' => $is_department_member ]);
+            return view('institute.department.view', ['institute' => $institute_id, 'department'=> $department, 'notices' => $notices, 'classes' => $classes, 'is_admin' => $is_admin, 'is_institute_member'=> $is_institute_member, 'is_department_member' => $is_department_member ]);
         }else{
             return view('message', ['message'=> "Department and institute are mismatched."]);
         }

@@ -46,14 +46,14 @@
 
 
                   <!-- Department Classroom -->
-                  @if (isset($notices) && $notices != null)
+                  @if (isset($classes) && $classes != null)
                     <div class="mt-10">
                         <div class="grid grid-cols-2 gap-4 content-center">
                             <h2 class="font-bold text-2xl"> Class rooms: </h2>
                             <div class="content-center">
                                 <div class="">
                                     <div class="flex content-center float-end">
-                                        <a href=" {{ route('institute.department.notice.all', [$institute, $department]) }} "
+                                        <a href=" {{ route('institute.department.classroom.list', [$institute, $department]) }} "
                                             class="mt-1 content-center text-gray-600 hover:text-gray-800 font-bold">See all ❯</a>
                                     </div>
                                 </div>
@@ -71,21 +71,21 @@
 
 
                         <div class="mt-5 mb-5 grid grid-cols-2 gap-4">
-                            @if (count($notices))
-                                @foreach ($notices as $notice)
+                            @if (count($classes))
+                                @foreach ($classes as $class)
                                     <div class="max-w-7xl mx-auto">
                                         <div class="relative group">
                                             <div
                                                 class="relative leading-none px-7 py-6 bg-gray-100 hover:text-slate-600 hover:bg-gray-200 transition duration-200 ring-1 ring-gray-900/5 rounded-lg flex items-top justify-start space-x-6 ">
                                                 <div class="space-y-2">
                                                     <h3 class="text-black font-bold">
-                                                        {{ Str::limit($notice->title, 40) }}
+                                                        {{ Str::limit($class->name, 40) }}
                                                     </h3>
                                                     <p class="text-gray-600">
-                                                        {{ Str::limit($notice->notice, 100) }}
+                                                        {{ Str::limit($class->description, 100) }}
                                                     </p>
-                                                    <div class="grid grid-cols-2 gap-4 content-center">
-                                                        <a href="{{ route('institute.department.notice.single', [$institute, $department, $notice->id]) }}"
+                                                    <div class="grid grid-cols-3 gap-4 content-center">
+                                                        <a href="{{ route('institute.department.classroom.view', [$institute, $department, $class->id]) }}"
                                                             class="content-center">
                                                             <p
                                                                 class="block text-indigo-400 font-bold  hover:text-slate-800 transition duration-200">
@@ -93,19 +93,26 @@
                                                             </p>
                                                         </a>
 
-                                                        <div>
+                                                        <div class="col-span-2">
                                                             @if ($is_admin)
                                                             <x-button-blank-link
                                                             class="bg-teal-600 float-end ms-3" 
-                                                            href="{{ route('institute.department.notice.edit-form', [ $institute, $department, $notice]) }}">
+                                                            href="">
                                                             Edit
                                                             </x-button-blank-link>
-                                                            <form action="{{ route('institute.department.notice.delete', [$institute, $department, $notice]) }}" method="POST">
+                                                            <form action="" method="POST">
                                                                 @csrf
                                                                 @method('DELETE')
                                                                 <x-button-blank-submit
                                                                     class="bg-red-500 float-end ms-3" href="/">
                                                                     Delete
+                                                                </x-button-blank-submit>
+                                                            </form>
+                                                            <form action="" method="POST">
+                                                                @csrf
+                                                                <x-button-blank-submit
+                                                                    class="bg-cyan-700 float-end ms-3" href="/">
+                                                                    Deactivate
                                                                 </x-button-blank-submit>
                                                             </form>
                                                             @endif
@@ -118,13 +125,13 @@
                                 @endforeach
                             @else
                                 <h3 class="text-black font-bold">
-                                    No Notice Found
+                                    No Classroom Found
                                 </h3>
                             @endif
                         </div>
 
                         <div>
-                            {{ $notices->links() }}
+                            {{ $classes->links() }}
                         </div>
 
                     </div>
@@ -137,22 +144,26 @@
                     <div class="mt-10">
                         <div class="grid grid-cols-2 gap-4 content-center">
                             <h2 class="font-bold text-2xl"> Notices: </h2>
-                            <div class="font-bold grid content-end">
-
-                                <div class="flex float-end">
-                                    <a href=" {{ route('institute.department.notice.all', [$institute, $department]) }} "
-                                        class="ms-auto ml-4 content-center text-gray-600 hover:text-gray-800">See all ❯</a>
-
+                            <div class="content-center">
+                                <div class="">
+                                    <div class="flex content-center float-end">
+                                        <a href=" {{ route('institute.department.notice.all', [$institute, $department]) }} "
+                                        class="ms-auto ml-4 content-center text-gray-600 hover:text-gray-800 font-bold">See all ❯</a>
+                                    </div>
                                 </div>
+                                
+                                <div class=" float-end me-5">
+                                    @if ($is_admin)
+                                        <x-button-blank-link class="outline outline-2 text-gray-800 bg-gray-800 ms-auto" href="{{route('institute.department.notice.create', [$institute, $department])}}">
+                                            Add new Notice
+                                        </x-button-blank-link>
+                                    @endif
+                                </div>
+    
                             </div>
                         </div>
-                        <div class="mt-5 mb-5">
-                            @if ($is_admin)
-                            <x-button-blank-link class="outline outline-2 text-gray-800 bg-gray-800 ms-auto" href="{{route('institute.department.notice.create', [$institute, $department])}}">
-                                Add new Notice
-                            </x-button-blank-link>
-                            @endif
-                        </div>
+
+
                         <div class="mt-5 mb-5 grid grid-cols-2 gap-4">
                             @if (count($notices))
                                 @foreach ($notices as $notice)

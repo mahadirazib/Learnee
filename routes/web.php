@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\Classroom\NoticeController;
 use App\Http\Controllers\ClassroomController;
+use App\Http\Controllers\ClassroomNoticeController;
 use App\Http\Controllers\DepartmentChangeAdminController;
 use App\Http\Controllers\DepartmentNoticeController;
 use App\Http\Controllers\InstituteChangeAdminController;
@@ -120,11 +122,22 @@ Route::delete('institute/{institute_id}/department/{department_id}/notice/{notic
 // Classrooms inside institutes
 Route::get('institute/{institute_id}/department/{department_id}/classroom/create', [ClassroomController::class, 'create'])->middleware(['auth', 'idtype.teacher', 'institute.department.admin'])->name('institute.department.classroom.create');
 Route::post('institute/{institute_id}/department/{department_id}/classroom/create', [ClassroomController::class, 'store'])->middleware(['auth', 'idtype.teacher', 'institute.department.admin'])->name('institute.department.classroom.store');
-
+Route::get('institute/{institute_id}/department/{department_id}/classroom/list', [ClassroomController::class, 'list'])->middleware(['auth', 'institute.department.facultyandstudent'])->name('institute.department.classroom.list');
+Route::get('institute/{institute_id}/department/{department_id}/classroom/{classroom_id}/view', [ClassroomController::class, 'view'])->middleware(['auth', 'institute.department.facultyandstudent'])->name('institute.department.classroom.view');
+Route::get('institute/{institute_id}/department/{department_id}/classroom/{classroom_id}/join', [ClassroomController::class, 'join'])->middleware(['auth', 'institute.department.facultyandstudent'])->name('institute.department.classroom.join');
+Route::post('institute/{institute_id}/department/{department_id}/classroom/{classroom_id}/join_confirm', [ClassroomController::class, 'join_confirm'])->middleware(['auth', 'institute.department.facultyandstudent'])->name('institute.department.classroom.join.confirm');
 
 // Json responses faculty list 
 Route::get('department_teacher_list/{institute_id}/{department_id}', [ ClassroomController::class,'teacher_list_json'])->middleware(['auth', 'idtype.teacher', 'institute.department.admin' ])->name('search-department-teacher');
 
+
+Route::get('institute/{institute_id}/department/{department_id}/classroom/{classroom_id}/notice', [ ClassroomNoticeController::class, 'list' ])->middleware(['auth', 'institute.department.class.facultyandstudent'])->name('institute.department.classroom.notice.list');
+Route::get('institute/{institute_id}/department/{department_id}/classroom/{classroom_id}/notice/create', [ ClassroomNoticeController::class, 'create' ])->middleware(['auth', 'institute.department.class.admin'])->name('institute.department.classroom.notice.create');
+Route::post('institute/{institute_id}/department/{department_id}/classroom/{classroom_id}/notice/store', [ ClassroomNoticeController::class, 'store' ])->middleware(['auth', 'institute.department.class.admin'])->name('institute.department.classroom.notice.store');
+Route::get('institute/{institute_id}/department/{department_id}/classroom/{classroom_id}/notice/view/{notice_id}', [ ClassroomNoticeController::class, 'view' ])->middleware(['auth', 'institute.department.class.facultyandstudent'])->name('institute.department.classroom.notice.view');
+Route::get('institute/{institute_id}/department/{department_id}/classroom/{classroom_id}/notice/edit/{notice_id}', [ ClassroomNoticeController::class, 'edit' ])->middleware(['auth', 'institute.department.class.admin'])->name('institute.department.classroom.notice.edit');
+Route::post('institute/{institute_id}/department/{department_id}/classroom/{classroom_id}/notice/update/{notice_id}', [ ClassroomNoticeController::class, 'update' ])->middleware(['auth', 'institute.department.class.admin'])->name('institute.department.classroom.notice.update');
+Route::delete('institute/{institute_id}/department/{department_id}/classroom/{classroom_id}/notice/delete/{notice_id}', [ ClassroomNoticeController::class, 'delete' ])->middleware(['auth', 'institute.department.class.admin'])->name('institute.department.classroom.notice.delete');
 
 
 

@@ -154,3 +154,79 @@ if(!function_exists("is_department_faculty_or_student")){
 
 
 
+
+if(!function_exists("is_classroom_admin")){
+  function is_classroom_admin($instituteId, $deptId, $classId, $userId){
+
+    if(is_department_admin($instituteId, $deptId, $userId)){
+      return true;
+    }
+
+    if(is_department_faculty_or_student($instituteId, $deptId, $userId)){
+      
+      $is_created_by_or_main_faculty = DB::table('department_classrooms')
+      ->where('id', $classId)
+      ->where(function ($query) use ($userId) {
+        $query->Where('created_by', $userId)
+        ->orWhere('main_faculty', $userId);
+      })->get();
+
+      if(count($is_created_by_or_main_faculty) > 0){
+        return true;
+      }else{
+        return false;
+      }
+    }else{
+      return false;
+    }
+
+  }
+
+}
+
+
+
+
+if(!function_exists("is_classroom_faculty_or_student")){
+  function is_classroom_faculty_or_student($instituteId, $deptId, $classId, $userId){
+
+    if(is_classroom_admin($instituteId, $deptId, $classId, $userId)){
+      return true;
+    }
+
+    if(is_department_faculty_or_student($instituteId, $deptId, $userId)){
+
+      $is_other_faculty = DB::table('classroom_faculties')
+      ->where('faculty', $userId)
+      ->where('institute', $instituteId)
+      ->where('department', $deptId)
+      ->where('classroom', $classId)
+      ->get();
+
+      $is_student = DB::table('classroom_students')
+      ->where('student', $userId)
+      ->where('institute', $instituteId)
+      ->where('department', $deptId)
+      ->where('classroom', $classId)
+      ->get();
+
+
+      if((count($is_other_faculty) > 0) || (count($is_student) > 0)){
+        return true;
+      }else{
+        return false;
+      }
+
+    }else{
+      return false;
+    }
+
+
+  }
+
+}
+
+
+
+
+
