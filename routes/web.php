@@ -5,6 +5,7 @@ use App\Http\Controllers\ClassroomController;
 use App\Http\Controllers\ClassroomNoticeController;
 use App\Http\Controllers\DepartmentChangeAdminController;
 use App\Http\Controllers\DepartmentNoticeController;
+use App\Http\Controllers\HomePageController;
 use App\Http\Controllers\InstituteChangeAdminController;
 use App\Http\Controllers\InstituteController;
 use App\Http\Controllers\InstituteControllerGlobal;
@@ -13,6 +14,7 @@ use App\Http\Controllers\InstituteNoticeController;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserProfileController;
+use App\Http\Controllers\PublicPostController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -32,9 +34,7 @@ Route::get('/', function () {
 
 
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
+Route::get('/dashboard', [HomePageController::class, 'index'])->middleware(['auth'])->name('dashboard');
 
 require __DIR__.'/auth.php';
 
@@ -46,6 +46,21 @@ Route::resource('profile', UserProfileController::class);
 // Global Routes.
 Route::get('user/{user_id}', [UserController::class, 'index'])->middleware(['auth'])->name('user.view');
 Route::get('institute/search', [InstituteControllerGlobal::class, 'index'])->middleware(['auth'])->name('global.institute.search');
+
+
+// User Post related
+Route::post('public/post/create', [PublicPostController::class, 'create'])->middleware(['auth'])->name('public.post.create');
+
+
+
+
+
+
+
+
+
+
+
 
 
 // Institute and user related (Institute default page)

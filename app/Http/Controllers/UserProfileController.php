@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 
 use App\Models\User;
+use App\Models\PublicPost;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -23,7 +24,9 @@ class UserProfileController extends Controller
     public function index(): View
     {
         $user = auth()->user();
-        return view("profile.index", ["user"=> $user]);
+        $posts = PublicPost::where('user', $user->id)->latest()->paginate();
+
+        return view("profile.index", ["user"=> $user, "posts" => $posts]);
     }
 
 

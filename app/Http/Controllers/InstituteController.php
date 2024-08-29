@@ -107,7 +107,7 @@ class InstituteController extends Controller
             $images = $request->file('images');
             foreach ($images as $image) {
                 // Generate a unique filename for each image
-                $filename = time() . uniqid() . "." . $image->getClientOriginalName();
+                $filename = time() . uniqid() . "_" . $image->getClientOriginalName();
 
                 array_push($image_names, $filename);
 
