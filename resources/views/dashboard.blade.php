@@ -149,7 +149,7 @@
   
                           @isset($post->post)
                             <div class="mt-2">
-                              <div class="textWithLines" class="description" data-description="{{ $post->post }}">{{ Str::limit($post->post, 160) }} <span class="text-gray-600 font-semibold text-sm cursor-pointer" onclick="seeMore(this)">See more</span>
+                              <div class="textWithLines" style="white-space-collapse: preserve-breaks;" class="description" data-description="{{ $post->post }}">{{ Str::limit($post->post, 160) }} <span class="text-gray-600 font-semibold text-sm cursor-pointer" onclick="seeMore(this)">See more</span>
                               </div>
                             </div>
                           @endisset

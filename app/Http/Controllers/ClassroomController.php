@@ -16,6 +16,25 @@ class ClassroomController extends Controller
 {
     
     
+    public function dashboard(Request $request, $institute_id, $department_id, $class_id){
+        $classroom = DepartmentClassroom::where('department_classrooms.id', $class_id)
+        ->join('institute_departments', 'department_classrooms.department', '=', 'institute_departments.id')
+        ->join('institutes', 'department_classrooms.institute', '=', 'institutes.id')
+        ->select(
+            'department_classrooms.*', 
+            'institute_departments.name as department_name', 
+            'institutes.name as institute_name'
+        )
+        ->first();
+        return view('classroom.dashboard', ['classroom' => $classroom]);
+    }
+
+
+
+
+
+
+
     public function create(Request $request, $institute_id, $department_id){
         
         $institute = [];
@@ -38,10 +57,10 @@ class ClassroomController extends Controller
             'department' => ['required', 'exists:App\Models\InstituteDepartment,id'],
             'name' => ['required'],
             'description' => ['required'],
-            'main_faculty' => ['required', 'exists:App\Models\User,id'],
-            'passkeys' => ['required', 'array' ],
-            'topics' => ['required', 'array' ],
-            'exam_types' => ['required', 'array' ],
+            'main_faculty' => ['nullable', 'exists:App\Models\User,id'],
+            'passkeys' => ['nullable', 'array' ],
+            'topics' => ['nullable', 'array' ],
+            'exam_types' => ['nullable', 'array' ],
         ]);
 
         $data['created_by'] = auth()->user()->id;

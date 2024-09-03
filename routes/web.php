@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Classroom\NoticeController;
 use App\Http\Controllers\ClassroomController;
+use App\Http\Controllers\ClassroomControllerGlobal;
 use App\Http\Controllers\ClassroomNoticeController;
 use App\Http\Controllers\DepartmentChangeAdminController;
 use App\Http\Controllers\DepartmentNoticeController;
@@ -65,6 +66,12 @@ Route::post('public/post/create', [PublicPostController::class, 'create'])->midd
 
 // Institute and user related (Institute default page)
 Route::get('institute', [InstituteController::class, 'index'])->middleware(['auth'])->name('institute');
+
+
+// User and Classroom related. Classroom default page
+Route::get('classroom/', [ClassroomControllerGlobal::class, 'index'])->middleware(['auth'])->name('classroom');
+Route::get('classroom/search', [ClassroomControllerGlobal::class, 'search'])->middleware(['auth'])->name('classroom.search');
+
 
 
 // Institute creat update delete
@@ -146,6 +153,13 @@ Route::post('institute/{institute_id}/department/{department_id}/classroom/{clas
 Route::get('department_teacher_list/{institute_id}/{department_id}', [ ClassroomController::class,'teacher_list_json'])->middleware(['auth', 'idtype.teacher', 'institute.department.admin' ])->name('search-department-teacher');
 
 
+// Classroom View Dashboard
+Route::get('institute/{institute_id}/department/{department_id}/classroom/{classroom_id}/dashboard', [ ClassroomController::class, 'dashboard' ])->middleware(['auth', 'institute.department.class.facultyandstudent'])->name('classroom.dashboard');
+
+// Classroom Resources
+
+
+// Classroom Notice
 Route::get('institute/{institute_id}/department/{department_id}/classroom/{classroom_id}/notice', [ ClassroomNoticeController::class, 'list' ])->middleware(['auth', 'institute.department.class.facultyandstudent'])->name('institute.department.classroom.notice.list');
 Route::get('institute/{institute_id}/department/{department_id}/classroom/{classroom_id}/notice/create', [ ClassroomNoticeController::class, 'create' ])->middleware(['auth', 'institute.department.class.admin'])->name('institute.department.classroom.notice.create');
 Route::post('institute/{institute_id}/department/{department_id}/classroom/{classroom_id}/notice/store', [ ClassroomNoticeController::class, 'store' ])->middleware(['auth', 'institute.department.class.admin'])->name('institute.department.classroom.notice.store');

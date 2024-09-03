@@ -20,6 +20,10 @@
                         {{ __('Institute') }}
                     </x-nav-link>
 
+                    <x-nav-link :href="route('classroom')" :active="request()->routeIs('classroom')">
+                        {{ __('Classroom') }}
+                    </x-nav-link>
+
                 </div>
             </div>
 
