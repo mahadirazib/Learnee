@@ -10,6 +10,9 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
 
+                    <x-alert></x-alert>
+                    <x-auth-validation-errors class="mb-4" :errors="$errors" />
+                    
                     Logged in as <br>
                     <span class="font-bold text-xl"> {{ Auth::user()->name }} </span> &lpar;{{ Auth::user()->account_type }}&rpar;
 
@@ -18,9 +21,6 @@
                         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                           <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                             <div class="bg-white">
-
-                              <x-alert></x-alert>
-                              <x-auth-validation-errors class="mb-4" :errors="$errors" />
 
                               <form action="{{ route('public.post.create') }}" 
                               method="post"

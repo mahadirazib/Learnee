@@ -111,7 +111,7 @@ class ClassroomControllerGlobal extends Controller
                 'institute_departments.name as department_name', 
                 'institutes.name as institute_name'
             )
-            ->get();
+            ->paginate(10, ['*'], 'general');
 
             // dd($enrolled_class);
             return view('classroom.index', ['general_access' => $enrolled_class, 'admin_access' => null ]);
